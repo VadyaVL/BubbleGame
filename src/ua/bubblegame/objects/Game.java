@@ -1,5 +1,6 @@
-package ua.bubblegame;
+package ua.bubblegame.objects;
 
+import ua.bubblegame.Services;
 import ua.bubblegame.players.Player;
 
 public class Game {
@@ -63,24 +64,46 @@ public class Game {
 	 * Make next game steep by computer or real player.
 	 */
 	public void nextSteep(){
+		
 		if(_playerOne == null || _playerTwo == null){
 			return;
 		}
 		
-		if(firstMakeSteep){	// first player make steep
-			
-		}
-		else{				// second player make steep
-			
-		}
+		Player currentPlayer = firstMakeSteep ? _playerOne : _playerTwo;
 		
 		// Check can player make steep
-		// click on player ball
-		// check can player make steep from this ball
-		// click on empty cell | anywhere
-		// make click, next player
+		if(checkCanPlayerMakeSteep(currentPlayer)){
+			System.out.println(currentPlayer + " can make steep");
+
+			int[] coordFrom = currentPlayer.makeSteepFrom(field); // get coord from ball for steep
+			System.out.println("Make steep from: " + coordFrom[0] + "x" + coordFrom[1]);
+				
+			int[] coordTo = currentPlayer.makeSteepTo(field, coordFrom[0], coordFrom[1]); // get coord from ball for steep
+			System.out.println("Make steep to: " + coordTo[0] + "x" + coordTo[1]);
+			// ѕроверить на соседство		
+			if(Services.isNeighbors(coordFrom, coordTo))
+				System.out.println("It\'s normal steep!");
+			else
+				System.out.println("It\'s not normal steep!");
+
+			// make steep
+			field[coordTo[0]][coordTo[1]] = currentPlayer.getBallsType().getNumber();
+			currentPlayer.incrementScore();
+			
+			// click on empty cell - make click
+			// | anywhere - reset and remake steep
+			// next player
+			
+			firstMakeSteep = !firstMakeSteep;
+		}
+		else{
+			System.out.println(currentPlayer + " can't make steep");
+			// We can mark win or lose player
+			firstMakeSteep = !firstMakeSteep;
+		}
+		System.out.println("-*-*-*-*-*-*-*-*-*-");
+
 		// repeat to end
-		
 	}
 	
 	/**
@@ -89,13 +112,9 @@ public class Game {
 	 * @return
 	 */
 	private boolean checkCanPlayerMakeSteep(Player player){
-		boolean result = true;
-		int ballsTypeNumber = player.getBallsType().getNumber();
-		
 		// Need check for every balls of this player opportunity make steep
 		// if ball has near empty
-		
-		return result;
+		return Services.checkBallTypeMakeSteep(field, player.getBallsType().getNumber());
 	}
 	
 	@Override
@@ -107,7 +126,17 @@ public class Game {
 		
 		for(int i=0; i<heightOfField; i++){
 			for(int j=0; j<widthOfField; j++){
-				res += field[i][j] + " ";
+				//res += field[i][j] + " ";
+				if(field[i][j]==0)
+					res += " ";
+				else if(field[i][j]==1)
+					res += "*";
+				else if(field[i][j]==9)
+					res += "E";
+				else if(field[i][j]==8)
+					res += "M";
+				else
+					res += "U";
 			}
 			res += "\n";
 		}
@@ -119,7 +148,7 @@ public class Game {
 	 * 
 	 * @return count of row field
 	 */
-	public int getFieldHeight(){
+	public final int getFieldHeight(){
 		return this.heightOfField;
 	}
 
@@ -127,7 +156,21 @@ public class Game {
 	 * 
 	 * @return count of column field
 	 */
-	public int getFieldWidth(){
+	public final int getFieldWidth(){
 		return this.widthOfField;
 	}
 }
+
+/*
+ѕосл≥овн≥сть д≥й:
+1) ѕерев≥р€Їмо чи гравець може зд≥йснити х≥д.
+   якщо н≥, то к≥нець гри.
+2) якщо може зд≥йснити х≥д, обираЇмо кульку натиском.
+   якщо з нењ можна зд≥йснити х≥д, позначаЇмо њњ активною.
+   якщо н≥ н≥чого не робимо, пропонуЇмо ще кл≥кнути.
+3) ќбравши кульку - кл≥каЇмо по позиц≥њ куди п≥ти
+   якщо порожньо, робимо х≥д ≥ переходимо до ≥ншого гравц€.
+   якщо не порожньо скидаЇмо активну кульку
+4) ≤ так повторюЇмо до виграшу чи програшу одного з гравц≥в.
+5) –ахуЇмо к≥льк≥сть очок кожного.
+*/

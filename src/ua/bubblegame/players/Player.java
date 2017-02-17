@@ -1,6 +1,6 @@
 package ua.bubblegame.players;
 
-import ua.bubblegame.BallsType;
+import ua.bubblegame.objects.BallsType;
 
 public abstract class Player {
 	
@@ -21,38 +21,49 @@ public abstract class Player {
 		setBallsType(type);
 	}
 	
+	public abstract int[] makeSteepFrom(int[][] field);
 	
+	public abstract int[] makeSteepTo(int[][] field, int row, int col);
 	
-	public String getName(){
+	@Override
+	public String toString(){
+		return "Player(" + name + ")";
+	}
+	
+	public final String getName(){
 		return this.name;
 	}
 
-	public int getScore(){
+	public final int getScore(){
 		return this.score;
 	}
 	
-	public BallsType getBallsType(){
+	public final BallsType getBallsType(){
 		return this.ballsType;
 	}
 	
-	public void setName(String val){
+	public final void setName(String val){
 		this.name = val;
 	}
 	
-	protected void setScore(int val){
+	protected final void setScore(int val){
 		this.score = val;
 	}
 	
-	public void setBallsType(BallsType val){
+	public void incrementScore(){
+		this.score++;
+	}
+	
+	public final void setBallsType(BallsType val){
 		this.ballsType = val;
 	}
 	
 	
-	public boolean getCanMakeSteep(){
+	public final boolean getCanMakeSteep(){
 		return this.canMakeMove;
 	}
 	
-	public void setCanMakeSteep(boolean val){
+	public final void setCanMakeSteep(boolean val){
 		this.canMakeMove = val;
 	}
 	

@@ -1,4 +1,4 @@
-package ua.bubblegame;
+package ua.bubblegame.objects;
 
 /**
  * Balls type.
@@ -8,7 +8,7 @@ package ua.bubblegame;
  *
  */
 public enum BallsType {
-	RED("Red", 0), BLUE("Blue", 0);
+	RED("Red", 9), BLUE("Blue", 8);
 	
 	private String _strData;
 	private int numberEquivalent;
