@@ -1,3 +1,10 @@
+/**
+ * Потрібно обдумати механізм, який дозволивби крае використати методи
+ * 	public abstract int[] makeSteepFrom(int[][] field);
+ *	public abstract int[] makeSteepTo(int[][] field, int row, int col);
+ *
+ *  Поглянути на те, як можна обійтися без передачі параметра field. Поглянути в шаблони проектування. 
+ */
 package ua.bubblegame.players;
 
 import ua.bubblegame.objects.BallsType;
